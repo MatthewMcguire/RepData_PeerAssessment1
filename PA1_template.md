@@ -1,16 +1,12 @@
----
-title: "Reproducible Research: Peer Assessment 1"
-author: "Matthew McGuire"
-output: 
-  html_document:
-    keep_md: true
----
+# Reproducible Research: Peer Assessment 1
+Matthew McGuire  
 
 ## Loading and preprocessing the data
 
 We begin by loading the data set into a data frame and formatting the date column properly.
 
-```{r, echo=TRUE}
+
+```r
 library(lubridate)
 library(ggplot2)
 
@@ -24,10 +20,21 @@ stepsData$date <- ymd(stepsData$date)
 head(stepsData)
 ```
 
+```
+##   steps       date interval
+## 1    NA 2012-10-01        0
+## 2    NA 2012-10-01        5
+## 3    NA 2012-10-01       10
+## 4    NA 2012-10-01       15
+## 5    NA 2012-10-01       20
+## 6    NA 2012-10-01       25
+```
+
 
 ## What is the total number of steps taken per day?
 
-```{r, echo=TRUE}
+
+```r
 # create a data frame storing total steps per day
 aggregData <- as.data.frame(tapply(stepsData[,1], as.factor(stepsData[,2]), sum, na.rm=TRUE))
 names(aggregData) <- "StepsPerDay"
@@ -50,6 +57,8 @@ text(medianStepsPerDay+1300, .00014, "Median\n(10395)")
 rug(aggregData[,1])
 ```
 
+![](PA1_template_files/figure-html/unnamed-chunk-2-1.png) 
+
 Of the 61 days that appear in the data set: 
 
 - The mean steps per day is $9354.2$.
@@ -57,7 +66,8 @@ Of the 61 days that appear in the data set:
 
 ## What is the average daily activity pattern?
 
-```{r, echo=TRUE}
+
+```r
 ## create a data frame to hold total steps and mean steps per interval 
 aggregIntervals <- as.data.frame(tapply(stepsData[,1], as.factor(stepsData[,3]), sum, na.rm=TRUE))
 names(aggregIntervals) <- "StepsPerInterval"
@@ -70,11 +80,14 @@ abline(v=aggregIntervals[ aggregIntervals$MeanStepsPerInterval==max(aggregInterv
 text(x=600,y=200,"Max: at 8:35\n(206.17 steps)")
 ```
 
+![](PA1_template_files/figure-html/unnamed-chunk-3-1.png) 
+
 The most active five-minute interval is 8:35, which has a mean of $206.17$ steps.
 
 ## Imputing missing values
 
-```{r, echo=TRUE}
+
+```r
 naDaysIntervals <- sum(is.na(stepsData[,c(2,3)]))
 naSteps <- sum(is.na(stepsData[,c(2,3)]))
 ```
